@@ -1,6 +1,6 @@
 import os
 
-from .main import app
+from cartograph.main import app
 
 
 if __name__ == "__main__":
