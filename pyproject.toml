@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "cartograph"
+version = "0.1.0"
+description = "Hiking tracker"
+authors = ["glyph <mail at strangegly dot ph>"]
+readme = "README.md"
+packages = [{include = "cartograph"}]
+license = "MIT"
+repository = "https://github.com/strangeglyph/cartograph"
+keywords = ["hiking", "map"]
+include = ["cartograph/localization/*", "cartograph/static/*", "cartograph/Templates/*"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flask = "^3.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

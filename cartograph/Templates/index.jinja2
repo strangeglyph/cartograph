@@ -1,0 +1,43 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cartograph</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/leaflet.css') }}">
+
+    <meta property="og:title" content="Cartograph">
+    <meta property="og:site_name" content="Cartograph">
+    <meta name="description" property="og:description" content="Cartograph Hiking Tracker">
+    <meta property="og:type" content="map">
+    <meta property="og:url" content="{{ base_url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='img/icon.svg') }}">
+    <meta property="og:image:alt" content="The Cartograph logo">
+    <meta property="og:locale" content="de">
+
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+
+    <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+<script src="{{ url_for('static', filename='js/vendor/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='js/vendor/leaflet.motion.js') }}"></script>
+
+<div id="map"></div>
+<div id="control">
+  <button onclick="playButtonPressed()">Play/Pause</button>
+  <button onclick="resetButtonPressed()">Reset</button>
+</div>
+
+<script src="{{ url_for('static', filename='js/waypoints.js') }}"></script>
+<script src="{{ url_for('static', filename='js/photodata.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>
