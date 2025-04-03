@@ -27,15 +27,52 @@
 
 <body>
 <script src="{{ url_for('static', filename='js/vendor/leaflet.js') }}"></script>
-<script src="{{ url_for('static', filename='js/vendor/leaflet.motion.js') }}"></script>
 
 <div id="map"></div>
+
 <div id="control">
-  <button onclick="playButtonPressed()">Play/Pause</button>
-  <button onclick="resetButtonPressed()">Reset</button>
+    <span id="date-indicator-pane">Letztes Update: <span id="date-indicator">Keins :(</span></span>
+    <!--
+    <label id="mode-change-pane" class="ilflex center">
+        <span class="switch-before">Ganze Route</span>
+        <input type="checkbox" role="switch" id="mode-switch" onchange="modeChange(this)">
+        <span class="switch-after">Zeitraffer</span>
+    </label>
+    -->
+    <span class="iflex center" id="media-control">
+        <span id="media-buttons">
+            <button class="media-button iflex center" id="reset-button" onclick="resetButtonPressed()">
+                <img src="{{ url_for('static', filename='img/backwards-fast.svg') }}" alt="Zum Anfang"/>
+            </button>
+            <button class="media-button iflex center" id="back-button" onclick="stepBackPressed()">
+                <img src="{{ url_for('static', filename='img/backwards-step.svg') }}" alt="Einen Tag zurück"/>
+            </button>
+            <button class="media-button iflex center" id="play-button" onclick="playPausePressed()">
+                <img src="{{ url_for('static', filename='img/play-pause.svg') }}" alt="Play/Pause"/>
+            </button>
+            <button class="media-button iflex center" id="forward-button" onclick="stepForwardPressed()">
+                <img class="mirror-h" src="{{ url_for('static', filename='img/backwards-step.svg') }}"
+                     alt="Einen Tag vor"/>
+            </button>
+            <button class="media-button iflex center" id="jump-end-button" onclick="toEndPressed()">
+                <img class="mirror-h" src="{{ url_for('static', filename='img/backwards-fast.svg') }}" alt="Zum Ende"/>
+            </button>
+        </span>
+        <span id="speed-contol">
+            <input type="number" value="1" min="1" max="10" id="playback-speed" onchange="speedChange(this)"/>
+            <label for="playback-speed">Tage / Sekunde</label>
+        </span>
+    </span>
 </div>
 
-<script src="{{ url_for('static', filename='js/waypoints.js') }}"></script>
+<script>
+const WAYPOINTS = [{% for waypoint in waypoints %}
+    {
+        date: new Date({{ waypoint.date.timestamp() * 1000 | int }}),
+        pos: L.latLng({{ waypoint.latitude }}, {{ waypoint.longitude }}),
+    },
+{% endfor %}
+]</script>
 <script src="{{ url_for('static', filename='js/photodata.js') }}"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>

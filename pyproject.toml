@@ -13,6 +13,7 @@ include = ["cartograph/localization/*", "cartograph/static/*", "cartograph/Templ
 [tool.poetry.dependencies]
 python = "^3.9"
 flask = "^3.1.0"
+dateparser = "==1.2.1"
 
 [build-system]
 requires = ["poetry-core"]

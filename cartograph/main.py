@@ -1,4 +1,5 @@
 import argparse
+import threading
 
 import flask
 from flask import Flask, request, g
@@ -6,6 +7,9 @@ import os
 import os.path
 import sys
 import json
+import geodata
+from geodata import GeodataThread
+
 
 # Hack for executing from different root dirs
 def get_data_path(relpath: str) -> str:
@@ -17,6 +21,13 @@ if os.getenv("CARTOGRAPH_CONFIG"):
     print(f"Loading config from {os.getenv('CARTOGRAPH_CONFIG')}")
     app.config.from_file(os.getenv("CARTOGRAPH_CONFIG"), load=json.load)
 app.config.from_prefixed_env()
+
+geodata = geodata.GeodataClient(app.config["GEODATA_MAIL_HOST"],
+                                app.config["GEODATA_MAIL_USER"],
+                                app.config["GEODATA_MAIL_PASSWORD"])
+geodata.update()
+geodata_thread = GeodataThread(geodata, 10)
+geodata_thread.start()
 
 
 @app.context_processor
@@ -32,7 +43,7 @@ def inject_site_info():
 
 @app.route("/")
 def index():
-    return flask.render_template('index.jinja2')
+    return flask.render_template('index.jinja2', waypoints=geodata.geodata)
 
 
 if "SITE_NAME" not in app.config:

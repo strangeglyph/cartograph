@@ -12,5 +12,5 @@ setup(
     package_data={
       "cartograph": ['static/*', 'Templates/*', 'localization/*'],
     },
-    install_requires=["flask"]
+    install_requires=["flask", "dateparser"]
 )

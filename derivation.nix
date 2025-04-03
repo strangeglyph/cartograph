@@ -5,9 +5,9 @@ pkgs.python3Packages.buildPythonPackage rec {
     version = "0.1.0";
     src = ./.;
 
-    propagatedBuildInputs = with pkgs.python3Packages; [ flask ];
+    propagatedBuildInputs = with pkgs.python3Packages; [ flask dateparser ];
 
-    pythonImportsCheck = [ "flask" ];
+    pythonImportsCheck = [ "flask" "dateparser" ];
     doCheck = false;
 
     postInstall = ''
