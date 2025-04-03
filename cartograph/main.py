@@ -7,8 +7,7 @@ import os
 import os.path
 import sys
 import json
-import geodata
-from geodata import GeodataThread
+from cartograph.geodata import GeodataThread, GeodataClient
 
 
 # Hack for executing from different root dirs
@@ -22,9 +21,9 @@ if os.getenv("CARTOGRAPH_CONFIG"):
     app.config.from_file(os.getenv("CARTOGRAPH_CONFIG"), load=json.load)
 app.config.from_prefixed_env()
 
-geodata = geodata.GeodataClient(app.config["GEODATA_MAIL_HOST"],
-                                app.config["GEODATA_MAIL_USER"],
-                                app.config["GEODATA_MAIL_PASSWORD"])
+geodata = GeodataClient(app.config["GEODATA_MAIL_HOST"],
+                        app.config["GEODATA_MAIL_USER"],
+                        app.config["GEODATA_MAIL_PASSWORD"])
 geodata.update()
 geodata_thread = GeodataThread(geodata, 10)
 geodata_thread.start()
