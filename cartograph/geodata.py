@@ -20,7 +20,8 @@ class DatedLatLng():
 def get_plain_body(msg: Message) -> str:
     for part in msg.walk():
         if part.get_content_type() == 'text/plain':
-            return part.get_payload(decode=True).decode('utf-8')
+            charset = part.get_param("charset", "ASCII")
+            return part.get_payload(decode=True).decode(charset)
     return None
 
 
@@ -38,7 +39,10 @@ def geodata_from_message(msg: Message) -> Optional[DatedLatLng]:
     if not match:
         return None
 
-    date = dateparser.parse(msg["Date"])
+    date_str = msg["Date"]
+    if date_str[-6:] == " (UTC)":
+        date_str = date_str[:-6]
+    date = dateparser.parse(date_str)
     return DatedLatLng(date, float(match.group("lat")), float(match.group("lng")))
 
 
