@@ -1,4 +1,3 @@
-import datetime
 from threading import Thread
 from time import sleep
 from typing import Optional, List
@@ -9,12 +8,7 @@ import email
 import re
 from email.message import Message
 
-
-class DatedLatLng():
-    def __init__(self, date: datetime.datetime, latitude: float, longitude: float):
-        self.date = date
-        self.latitude = latitude
-        self.longitude = longitude
+from cartograph.latlng import DatedLatLng
 
 
 def get_plain_body(msg: Message) -> str:
