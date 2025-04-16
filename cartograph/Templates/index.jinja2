@@ -66,14 +66,37 @@
 </div>
 
 <script>
+class Photo {
+    constructor(path, desc) {
+        this.path = path;
+        this.desc = desc;
+    }
+}
+
 const WAYPOINTS = [{% for waypoint in waypoints %}
     {
         date: new Date({{ waypoint.date.timestamp() * 1000 | int }}),
         pos: L.latLng({{ waypoint.latitude }}, {{ waypoint.longitude }}),
     },
 {% endfor %}
-]</script>
-<script src="{{ url_for('static', filename='js/photodata.js') }}"></script>
+]
+
+const PHOTO_DATA = [{% for segment in collation %}
+    [{% for collation_point in segment %}
+        {
+            position: [{{ collation_point.pos.latitude }}, {{ collation_point.pos.longitude }}],
+            main_index: {{ collation_point.main_idx }},
+            fraction: {{ collation_point.sub_idx }},
+            photos: [{% for photo in collation_point.photos %}
+                new Photo("{{ photo }}", ""),
+            {% endfor %}
+            ]
+        },
+    {% endfor %}
+    ],
+{% endfor %}
+]
+</script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 

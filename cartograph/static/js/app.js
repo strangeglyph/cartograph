@@ -68,7 +68,7 @@ function createPopupSlideshow(photo_datum) {
 
         return `
         <div class="slideshow-entry ${extra_classes}">
-            <img class="slideshow-img" src="/static/img/photos/${photo.path}" alt="${photo.desc}"/>
+            <img class="slideshow-img" src="/static/photos/${photo.path}" alt="${photo.desc}"/>
             <span class="slideshow-text">${photo.desc}</span>
         </div>
     `;
@@ -81,13 +81,21 @@ function createPopupSlideshow(photo_datum) {
         is_first = false;
     }
 
-    return `
-    <div id="${id}" class="slideshow">
-        <button onclick="slideshowUpdate('${id}', -1)">&lt;</button>
-        ${entries}
-        <button onclick="slideshowUpdate('${id}', 1)">&gt;</button>
-     </div>
-  `;
+    if (photo_datum.photos.length > 1) {
+        return `
+        <div id="${id}" class="slideshow">
+            <button onclick="slideshowUpdate('${id}', -1)">&lt;</button>
+            ${entries}
+            <button onclick="slideshowUpdate('${id}', 1)">&gt;</button>
+         </div>
+      `;
+    } else {
+        return `
+        <div id="${id}" class="slideshow">
+            ${entries}
+         </div>
+        `;
+    }
 }
 
 
@@ -117,7 +125,7 @@ function reinit_photo_group(idx, max_fraction=1.0) {
         console.log(`photo group ${idx} datum ${photo_datum.fraction}/${max_fraction}`);
 
         L.marker(photo_datum.position, {icon: CAMERA_ICON})
-            .bindPopup(createPopupSlideshow(photo_datum), {maxWidth: "auto"})
+            .bindPopup(createPopupSlideshow(photo_datum), {minWidth: "90vw", maxWidth: "90vw"})
             .addTo(group);
     }
 }

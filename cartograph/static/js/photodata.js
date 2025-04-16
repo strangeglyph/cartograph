@@ -1,9 +1,3 @@
-class Photo {
-    constructor(path, desc) {
-        this.path = path;
-        this.desc = desc;
-    }
-}
 
 const PHOTO_DATA = [
     [

@@ -6,6 +6,10 @@
   "GEODATA_MAIL_HOST": "mail.example.com",
   "GEODATA_MAIL_USER": "geodata@mail.example.com",
   "GEODATA_MAIL_PASSWORD": "password",
-  "PHOTO_LOCATION": "/path/to/recipes",
-  "DB_LOCATION": "cartograph.sqlite",
+  "PHOTO_LOCATION": "/var/cartograph/photos/",
+  "DB_LOCATION": "/var/cartograph/cartograph.sqlite",
+  "WEBDAV_URL": "https://example.com",
+  "WEBDAV_LOGIN": "cartograph",
+  "WEBDAV_PASSWORD": "super-secret-cartograph-password",
+  "WEBDAV_FILE_PATH": "Photos"
 }

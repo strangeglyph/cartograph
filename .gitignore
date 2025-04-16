@@ -4,3 +4,4 @@ __pycache__/
 *.xcf
 Pipfile.lock
 *.sqlite
+cartograph/static/photos

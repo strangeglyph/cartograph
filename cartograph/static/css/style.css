@@ -53,8 +53,10 @@ body {
 }
 
 .slideshow-img {
-    width: 900px;
+    width: auto;
     height: auto;
+    max-height: 85vh;
+    max-width: 85vw;
 }
 
 #control {
