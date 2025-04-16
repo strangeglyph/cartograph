@@ -1,8 +1,11 @@
 {
   "DEBUG": false,
-  "COOKBOOK_LOCATION": "/path/to/recipes",
-  "SECRET_KEY": put something here,
-  "DEFAULT_LANG": "en",
-  "BASE_URL": "https://example.com",
-  "SITE_NAME": "Cookbook"
+  "SECRET_KEY": change me,
+  "BASE_URL": "https://example.com/",
+  "SITE_NAME": "Cartograph",
+  "GEODATA_MAIL_HOST": "mail.example.com",
+  "GEODATA_MAIL_USER": "geodata@mail.example.com",
+  "GEODATA_MAIL_PASSWORD": "password",
+  "PHOTO_LOCATION": "/path/to/recipes",
+  "DB_LOCATION": "cartograph.sqlite",
 }

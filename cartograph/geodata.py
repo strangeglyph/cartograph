@@ -1,3 +1,5 @@
+import sqlite3
+import time
 from threading import Thread
 from time import sleep
 from typing import Optional, List
@@ -45,10 +47,10 @@ class GeodataClient:
         self.host = host
         self.user = user
         self.password = password
-        self.geodata: List[DatedLatLng] = []
 
-    def update(self):
+    def update(self) -> List[DatedLatLng]:
         result = []
+        start = time.time()
         print(f"Connecting to {self.host}")
         with imaplib.IMAP4_SSL(self.host) as mail:
             print(f"Authenticating as {self.user} with {self.password}")
@@ -70,17 +72,26 @@ class GeodataClient:
                 if geodata:
                     result.append(geodata)
 
-        print(f"{len(result)} data points extracted")
-        self.geodata = sorted(result, key=lambda latlng: latlng.date)
+        end = time.time()
+        print(f"{len(result)} data points extracted in {end - start:.1f} seconds")
+        return sorted(result, key=lambda latlng: latlng.date)
 
 
 class GeodataThread(Thread):
-    def __init__(self, geodata_client: GeodataClient, minutes: int):
+    def __init__(self, geodata_client: GeodataClient, minutes: int, db_path: str):
         super().__init__()
         self.geodata_client = geodata_client
         self.minutes = minutes
+        self.db_path = db_path
+        con = sqlite3.connect(db_path)
+        con.execute("CREATE TABLE IF NOT EXISTS Geodata(date PRIMARY KEY, latitude, longitude)")
+        con.close()
 
     def run(self):
         while True:
+            data = [(it.date, it.latitude, it.longitude) for it in self.geodata_client.update()]
+            con = sqlite3.connect(self.db_path)
+            con.executemany("INSERT OR REPLACE INTO Geodata VALUES(:date, :latitude, :longitude)", data)
+            con.commit()
+            con.close()
             sleep(self.minutes * 60)
-            self.geodata_client.update()

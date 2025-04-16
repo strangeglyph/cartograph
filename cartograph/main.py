@@ -1,4 +1,5 @@
 import argparse
+import sqlite3
 import threading
 
 import flask
@@ -7,7 +8,10 @@ import os
 import os.path
 import sys
 import json
+import datetime
 from cartograph.geodata import GeodataThread, GeodataClient
+from cartograph.latlng import DatedLatLng
+
 
 
 # Hack for executing from different root dirs
@@ -21,11 +25,24 @@ if os.getenv("CARTOGRAPH_CONFIG"):
     app.config.from_file(os.getenv("CARTOGRAPH_CONFIG"), load=json.load)
 app.config.from_prefixed_env()
 
+
+def adapt_datetime_epoch(val):
+    """Adapt datetime.datetime to Unix timestamp."""
+    return int(val.timestamp())
+
+
+def convert_timestamp(val):
+    """Convert Unix epoch timestamp to datetime.datetime object."""
+    return datetime.datetime.fromtimestamp(int(val))
+
+
+sqlite3.register_adapter(datetime.datetime, adapt_datetime_epoch)
+sqlite3.register_converter("timestamp", convert_timestamp)
+
 geodata = GeodataClient(app.config["GEODATA_MAIL_HOST"],
                         app.config["GEODATA_MAIL_USER"],
                         app.config["GEODATA_MAIL_PASSWORD"])
-geodata.update()
-geodata_thread = GeodataThread(geodata, 10)
+geodata_thread = GeodataThread(geodata, 1, app.config["DB_LOCATION"])
 geodata_thread.start()
 
 
@@ -42,7 +59,15 @@ def inject_site_info():
 
 @app.route("/")
 def index():
-    return flask.render_template('index.jinja2', waypoints=geodata.geodata)
+    con = sqlite3.connect(app.config["DB_LOCATION"])
+    cur = con.execute("SELECT * FROM Geodata ORDER BY date")
+    points = cur.fetchall()
+    print(points)
+    con.close()
+    waypoints = []
+    for point in points:
+        waypoints.append(DatedLatLng(datetime.datetime.fromtimestamp(int(point[0])), point[1], point[2]))
+    return flask.render_template('index.jinja2', waypoints=waypoints)
 
 
 if "SITE_NAME" not in app.config:
