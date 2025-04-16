@@ -42,7 +42,7 @@ sqlite3.register_converter("timestamp", convert_timestamp)
 geodata = GeodataClient(app.config["GEODATA_MAIL_HOST"],
                         app.config["GEODATA_MAIL_USER"],
                         app.config["GEODATA_MAIL_PASSWORD"])
-geodata_thread = GeodataThread(geodata, 1, app.config["DB_LOCATION"])
+geodata_thread = GeodataThread(geodata, 10, app.config["DB_LOCATION"])
 geodata_thread.start()
 
 

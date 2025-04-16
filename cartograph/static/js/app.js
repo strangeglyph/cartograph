@@ -302,7 +302,7 @@ const ANIM_GROUP = L.featureGroup();
 let anim = new LineAnim(WAYPOINT_POS, ANIM_GROUP, HIKER_ICON, segmentChange, fractionalChange);
 anim.toEnd();
 ANIM_GROUP.addTo(map);
-map.fitBounds(anim.line.getBounds());
+map.fitBounds(anim.line.getBounds().pad(0.1));
 
 document.getElementById("playback-speed").value = "1";
 
