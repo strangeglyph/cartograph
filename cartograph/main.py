@@ -73,8 +73,12 @@ def inject_site_info():
 
 @app.route("/")
 def index():
+    print("[cartograph] request for /")
+    print("[cartograph] extracting waypoints")
     waypoints = extract_waypoints()
+    print("[cartograph] collating photos")
     collation = collate_photos(waypoints)
+    print("[cartograph] begin render template")
     return flask.render_template('index.jinja2', waypoints=waypoints, collation=collation)
 
 
@@ -158,7 +162,7 @@ def collate_photos(waypoints: List[DatedLatLng]) -> List[List[CollationPoint]]:
             collation[main_idx].append(new_cpoint)
 
     end = time.time()
-    print(f"Collation took {end - start:.1f} seconds")
+    print(f"[cartograph] Collation took {end - start:.1f} seconds")
     return collation
 
 
