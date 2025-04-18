@@ -47,7 +47,7 @@ os.makedirs(os.path.dirname(app.config["DB_LOCATION"]), exist_ok=True)
 photodata_thread = PhotodataThread(webdav_url=app.config["WEBDAV_URL"],
                                    webdav_login=app.config["WEBDAV_LOGIN"],
                                    webdav_password=app.config["WEBDAV_PASSWORD"],
-                                   minutes=10,
+                                   minutes=15,
                                    db_path=app.config["DB_LOCATION"],
                                    remote_path=app.config["WEBDAV_FILE_PATH"],
                                    local_path=app.config["PHOTO_LOCATION"])
@@ -56,7 +56,7 @@ photodata_thread.start()
 geodata = GeodataClient(app.config["GEODATA_MAIL_HOST"],
                         app.config["GEODATA_MAIL_USER"],
                         app.config["GEODATA_MAIL_PASSWORD"])
-geodata_thread = GeodataThread(geodata, 10, app.config["DB_LOCATION"])
+geodata_thread = GeodataThread(geodata, 15, app.config["DB_LOCATION"])
 geodata_thread.start()
 
 
