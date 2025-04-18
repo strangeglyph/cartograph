@@ -74,9 +74,7 @@ def inject_site_info():
 @app.route("/")
 def index():
     waypoints = extract_waypoints()
-    print(waypoints)
     collation = collate_photos(waypoints)
-    print(collation)
     return flask.render_template('index.jinja2', waypoints=waypoints, collation=collation)
 
 
