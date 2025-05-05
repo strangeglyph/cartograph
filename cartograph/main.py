@@ -109,7 +109,7 @@ def path_pos_from_latlng(waypoints: List[DatedLatLng], pos: DatedLatLng) -> (int
         next_closest_ix = closest_ix + 1
 
     next_closest_dist = waypoints[next_closest_ix].dist(pos)
-    fract_on_segment = closest_dist / (closest_dist + next_closest_dist)
+    fract_on_segment = closest_dist / (closest_dist + next_closest_dist + 0.00001)
 
     fract_on_segment = int(fract_on_segment * 10) / 10
 
