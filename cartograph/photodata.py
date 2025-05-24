@@ -29,15 +29,15 @@ def extract_geodata(img: Image, fallback_waypoints):
         timestamp = datetime.datetime.strptime(date_str, '%Y:%m:%d %H:%M:%S')
     except KeyError:
         stem = pathlib.Path(img.filename).stem
-        date_str = None
         if regex.match(r"\d{8}-\d{6}", stem):
             date_str = stem
+            timestamp = datetime.datetime.strptime(date_str, '%Y%m%d_%H%M%S')
         elif regex.match(r"IMG-\d{8}-WA\d+", stem):
             date_str = stem.split("-")[1]
+            timestamp = datetime.datetime.strptime(date_str, '%Y%m%d')
         else:
             raise Exception(f"Unable to extract date info from file name: {stem}")
 
-        timestamp = datetime.datetime.strptime(date_str, '%Y%m%d_%H%M%S')
 
 
     lat_ddeg = 0.0
@@ -99,7 +99,7 @@ class PhotodataThread(Thread):
         sync_start = time.time()
         print("Beginning photo sync")
         try:
-            updated = self.client.pull(remote_directory=self.remote_path, local_directory=self.local_path)
+            self.client.pull(remote_directory=self.remote_path, local_directory=self.local_path)
         except Exception as e:
             print(f"[cartograph:photo] Error: Failed to sync - {e}")
         sync_end = time.time()
