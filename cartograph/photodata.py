@@ -7,6 +7,7 @@ from time import sleep
 import datetime
 
 from PIL import Image, ExifTags
+from regex import regex
 from webdav3.client import Client
 
 from cartograph.latlng import DatedLatLng
@@ -27,8 +28,17 @@ def extract_geodata(img: Image, fallback_waypoints):
         date_str = exif[DATETIME_KEY]
         timestamp = datetime.datetime.strptime(date_str, '%Y:%m:%d %H:%M:%S')
     except KeyError:
-        date_str = pathlib.Path(img.filename).stem
+        stem = pathlib.Path(img.filename).stem
+        date_str = None
+        if regex.match(r"\d{8}-\d{6}", stem):
+            date_str = stem
+        elif regex.match(r"IMG-\d{8}-WA\d+", stem):
+            date_str = stem.split("-")[1]
+        else:
+            raise Exception(f"Unable to extract date info from file name: {stem}")
+
         timestamp = datetime.datetime.strptime(date_str, '%Y%m%d_%H%M%S')
+
 
     lat_ddeg = 0.0
     lng_ddeg = 0.0
@@ -88,7 +98,10 @@ class PhotodataThread(Thread):
     def update_photodata(self):
         sync_start = time.time()
         print("Beginning photo sync")
-        updated = self.client.pull(remote_directory=self.remote_path, local_directory=self.local_path)
+        try:
+            updated = self.client.pull(remote_directory=self.remote_path, local_directory=self.local_path)
+        except Exception as e:
+            print(f"[cartograph:photo] Error: Failed to sync - {e}")
         sync_end = time.time()
         print(f"Synced files in {sync_end - sync_start:.1f} seconds")
 
