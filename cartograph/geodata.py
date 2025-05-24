@@ -89,9 +89,12 @@ class GeodataThread(Thread):
 
     def run(self):
         while True:
-            data = [(it.date, it.latitude, it.longitude) for it in self.geodata_client.update()]
-            con = sqlite3.connect(self.db_path)
-            con.executemany("INSERT OR REPLACE INTO Geodata VALUES(:date, :latitude, :longitude)", data)
-            con.commit()
-            con.close()
+            try:
+                data = [(it.date, it.latitude, it.longitude) for it in self.geodata_client.update()]
+                con = sqlite3.connect(self.db_path)
+                con.executemany("INSERT OR REPLACE INTO Geodata VALUES(:date, :latitude, :longitude)", data)
+                con.commit()
+                con.close()
+            except Exception as e:
+                print(f"[cartograph:geo] Error - {e}")
             sleep(self.minutes * 60)
