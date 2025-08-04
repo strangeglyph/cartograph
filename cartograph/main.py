@@ -26,6 +26,9 @@ app = Flask(__name__, template_folder=get_data_path("Templates"))
 if os.getenv("CARTOGRAPH_CONFIG"):
     print(f"Loading config from {os.getenv('CARTOGRAPH_CONFIG')}")
     app.config.from_file(os.getenv("CARTOGRAPH_CONFIG"), load=json.load)
+if os.getenv("EXTRA_CARTOGRAPH_CONFIG"): # for secrets
+    print(f"Loading config from {os.getenv('EXTRA_CARTOGRAPH_CONFIG')}")
+    app.config.from_file(os.getenv("EXTRA_CARTOGRAPH_CONFIG"), load=json.load)
 app.config.from_prefixed_env()
 
 
