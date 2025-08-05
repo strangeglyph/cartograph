@@ -2,7 +2,7 @@
 
 pkgs.python3Packages.buildPythonPackage rec {
     pname = "cartograph";
-    version = "0.1.0";
+    version = "0.1.1";
     src = ./.;
 
     propagatedBuildInputs = with pkgs.python3Packages; [ flask dateparser webdavclient3 pillow ];
