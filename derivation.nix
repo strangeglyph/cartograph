@@ -7,6 +7,9 @@ pkgs.python3Packages.buildPythonPackage rec {
 
     propagatedBuildInputs = with pkgs.python3Packages; [ flask dateparser webdavclient3 pillow ];
 
+    pyproject = true;
+    buildSystem = with pkgs.python3Packages; [ setuptools ];
+
     pythonImportsCheck = [ "flask" "dateparser" "webdav3" "PIL" ];
     doCheck = false;
 
