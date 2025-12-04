@@ -6,9 +6,10 @@ pkgs.python3Packages.buildPythonPackage rec {
     src = ./.;
 
     propagatedBuildInputs = with pkgs.python3Packages; [ flask dateparser webdavclient3 pillow ];
+    nativeBuildInputs = with pkgs.python3Packages; [ poetry-core ];
 
     pyproject = true;
-    buildSystem = with pkgs.python3Packages; [ setuptools ];
+    buildSystem = with pkgs.python3Packages; [ poetry-core ];
 
     pythonImportsCheck = [ "flask" "dateparser" "webdav3" "PIL" ];
     doCheck = false;
