@@ -53,7 +53,7 @@ class GeodataClient:
         start = time.time()
         print(f"Connecting to {self.host}")
         with imaplib.IMAP4_SSL(self.host) as mail:
-            print(f"Authenticating as {self.user} with {self.password}")
+            print(f"Authenticating as {self.user} with ******")
             mail.login(self.user, self.password)
             mail.enable('UTF8=ACCEPT')
             mail.select('inbox')
