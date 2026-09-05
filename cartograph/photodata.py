@@ -117,7 +117,7 @@ class PhotodataThread(Thread):
             path = os.path.join(self.local_path, file)
             if os.path.isfile(path):
                 try:
-                    geodata = extract_geodata(Image.open(path), fallback_waypoints)
+                    geodata = extract_geodata(Image.open(path, formats=["JPEG", "PNG", "WebP"]), fallback_waypoints)
                     extracted_data.append((file, geodata.date, geodata.latitude, geodata.longitude))
                 except Exception as e:
                     print(f"Error extrating exif data from {file}: {e}")
